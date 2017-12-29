@@ -71,13 +71,12 @@ void DynCreation::bothExist(string p, string q)
 	if( nocl[q] == nocl[p] )    return;
 	int temp1=nocl[p];
 	int temp2=nocl[q];
-	int tmpClSizeNocl = clSize[temp1];
-	tmp_i -= (long long int)tmpClSizeNocl*(long long int)tmpClSizeNocl;
-	tmpClSizeNocl = clSize[temp2];
-	tmp_i -= (long long int)tmpClSizeNocl*(long long int)tmpClSizeNocl;
-	int temp3 = 0, temp4 = 0;
+	int tmp1ClSizeNocl = clSize[temp1];
+	tmp_i -= (long long int)tmp1ClSizeNocl*(long long int)tmp1ClSizeNocl;
+	int tmp2ClSizeNocl = clSize[temp2];
+	tmp_i -= (long long int)tmp2ClSizeNocl*(long long int)tmp2ClSizeNocl;
 	// Merge the two clusters, keeping(removing) the largest(smallest)
-	if( clSize[temp1] >= clSize[temp2] )
+	if( tmp1ClSizeNocl >= tmp2ClSizeNocl )
     	{
 		for(auto& x: nocl)
 		{
@@ -88,8 +87,6 @@ void DynCreation::bothExist(string p, string q)
 			clSize[temp1]++;
 		    }
 		}
-		temp3 = temp1;	// Largest
-		temp4 = temp2;
 	}
 	else
 	{
@@ -102,13 +99,18 @@ void DynCreation::bothExist(string p, string q)
 			clSize[temp2]++;
 		    }
 		}
-		temp3 = temp2;	// Largest
-		temp4 = temp1;
 	}
-	tmpClSizeNocl = clSize[temp3];
+	int tmpClSizeNocl = (tmp1ClSizeNocl >= tmp2ClSizeNocl) ? clSize[temp1] : clSize[temp2];
 	tmp_i += (long long int)tmpClSizeNocl*(long long int)tmpClSizeNocl;
-	changeMax(tmpClSizeNocl);
-	clSize.erase(temp4);
+	set <int> tmpset;
+	for( auto& x : clSize )	tmpset.insert(x.second);
+	set <int>::reverse_iterator rit=tmpset.rbegin();
+	for(int i=0; i<3; ++i)
+	{
+		threemax[i] = *rit;
+		++rit;
+	}
+	clSize.erase((tmp1ClSizeNocl >= tmp2ClSizeNocl) ? temp2 : temp1);
 }
 
 // Calculate reduced average cluster size
