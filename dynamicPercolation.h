@@ -15,12 +15,13 @@ class DynCreation
 {
 	private:
 		int clusNumber, noEdges, *threemax;
-		long long int tmp_i;		// Temporary Variable for reduced average cluster size
-		map<string, int> nocl;	// Number of cluster for each node
-		map<int, int> clSize;		// Size of each cluster
+		long long int tmp_i;	// Temporary Variable for reduced average cluster size
+		map<string, int> nocl;// Number of cluster for each node
+		map<int, int> clSize;	// Size of each cluster
+		map<int, int> clDist;	// Distribution of cluster sizes
 		set<string> nodes;
 		string n1, n2;
-		void changeMax(int number);
+		void calculateMaxClusters();
 		void insertEdge(string, string);
 		void noneExists(string, string);
 		void onlyPExists(string, string);
